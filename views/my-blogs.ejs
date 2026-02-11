@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('./partials/head') %>
+        <title>My Blogs</title>
+</head>
+
+<body>
+    <%- include('./partials/nav') %>
+
+        <div class="container mt-3">
+            <h2 class="mb-4">My Blogs</h2>
+
+            <% if (blogs.length===0) { %>
+                <h5>You haven't created any blogs yet.</h5>
+                <% } %>
+
+                    <div class="row row-cols-1 row-cols-md-4 g-4">
+
+                        <% blogs.forEach(blog=> { %>
+
+                            <div class="col">
+                                <div class="card h-100">
+
+                                    <img src="<%= blog.coverImageURL %>" class="card-img-top"
+                                        style="height:200px; object-fit:cover;" alt="">
+
+                                    <div class="card-body">
+                                        <h5 class="card-title">
+                                            <%= blog.title %>
+                                        </h5>
+
+                                        <a href="/blog/<%= blog._id %>" class="btn btn-primary">
+                                            View
+                                        </a>
+                                        <form action="/blog/delete/<%= blog._id %>" method="POST"
+                                            style="display:inline;">
+                                            <button class="btn btn-danger ">
+                                                Delete
+                                            </button>
+                                        </form>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <% }) %>
+
+                    </div>
+        </div>
+
+        <%- include('./partials/script') %>
+</body>
+
+</html>

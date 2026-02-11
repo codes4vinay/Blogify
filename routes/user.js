@@ -1,0 +1,48 @@
+const express = require('express');
+const User = require('../models/user');
+const Blog = require('../models/blog');
+const router = express.Router();
+
+router.get('/signin', (req, res) => {
+    return res.render("signin")
+})
+router.get('/signup', (req, res) => {
+    return res.render("signup");
+})
+
+router.post('/signup', async (req, res) => {
+    const { fullName, email, password } = req.body;
+    await User.create({
+        fullName,
+        email,
+        password
+    });
+    return res.redirect('/user/signin');
+})
+
+router.post('/signin', async (req, res) => {
+    const { email, password } = req.body;
+    try {
+        const token = await User.matchPasswordAndGenerateToken(email, password);
+        return res.cookie('token', token).redirect('/')
+    } catch (error) {
+        return res.render('signin', {
+            error: "Incorrect Email or Password",
+        });
+    }
+})
+
+router.get('/logout', (req, res) => {
+    res.clearCookie('token').redirect('/');
+})
+
+router.get('/my-blogs', async (req, res) => {
+    const user = req.user;
+    const myBlogs = await Blog.find({ createdBy: user._id }).populate('createdBy');
+    return res.render('my-blogs', {
+        blogs: myBlogs,
+        user: user
+    });
+})
+
+module.exports = router;
