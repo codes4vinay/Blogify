@@ -3,27 +3,136 @@
 
 <head>
     <%- include('./partials/head') %>
-        <title>Blogs</title>
+    <title><%= blog.title %> | Blog</title>
+
+    <style>
+        /* Blog Container */
+        .blog-wrapper {
+            max-width: 900px;
+            margin: auto;
+            padding: 20px;
+        }
+
+        /* Blog Title */
+        .blog-title {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        /* Blog Cover */
+        .blog-cover {
+            width: 100%;
+            max-height: 450px;
+            object-fit: cover;
+            border-radius: 12px;
+            margin: 20px 0;
+        }
+
+        /* Blog Content */
+        .blog-content {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #333;
+            white-space: pre-wrap;
+        }
+
+        /* Author Card */
+        .author-card {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 12px;
+            margin-top: 30px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+        }
+
+        /* Author Image */
+        .author-img {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #0d6efd;
+        }
+
+        /* Author Name */
+        .author-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .blog-title {
+                font-size: 1.7rem;
+            }
+
+            .blog-content {
+                font-size: 1rem;
+            }
+
+            .author-img {
+                width: 55px;
+                height: 55px;
+            }
+        }
+    </style>
 
 </head>
 
 <body>
+
     <%- include('./partials/nav') %>
-        <div class="container mt-4">
-            <h1>
-                <%= blog.title %>
-            </h1>
-            <img src="<%= blog.coverImageURL %>" width="60%" alt="">
-            <pre><%= blog.body %></pre>
+
+    <!-- Blog Section -->
+    <div class="container blog-wrapper">
+
+        <!-- Title -->
+        <h1 class="blog-title">
+            <%= blog.title %>
+        </h1>
+
+        <!-- Cover Image -->
+        <img 
+            src="<%= blog.coverImageURL %>" 
+            alt="Blog Cover"
+            class="blog-cover"
+        >
+
+        <!-- Content -->
+        <div class="blog-content">
+            <%= blog.body %>
         </div>
 
-        <div class="container ">
-            <img src="<%= blog.createdBy.profileImageUrl %>" width="100px"
-                style="border:1px solid blue; border-radius:10%;" alt="">
-            <%= blog.createdBy.fullName %>
+        <!-- Author Info -->
+        <div class="author-card">
+
+            <img 
+                src="<%= blog.createdBy.profileImageUrl %>" 
+                alt="Author"
+                class="author-img"
+            >
+
+            <div>
+                <div class="author-name">
+                    <%= blog.createdBy.fullName %>
+                </div>
+
+                <small class="text-muted">
+                    Published on <%= new Date(blog.createdAt).toDateString() %>
+                </small>
+            </div>
+
         </div>
 
-        <%- include('./partials/script') %>
+    </div>
+
+    <%- include('./partials/script') %>
+
 </body>
 
 </html>
